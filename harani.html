@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harani ❤️</title>
+
+<style>
+body{
+    margin:0;
+    font-family: Arial, sans-serif;
+    background-image:url('yourphoto.jpg');
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+    overflow-x:hidden;
+    color:white;
+    position:relative;
+}
+
+/* Dark + Blur Overlay */
+body::before{
+    content:"";
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.65);
+    backdrop-filter:blur(4px);
+    z-index:-1;
+}
+
+/* Glass Card */
+.glass{
+    backdrop-filter:blur(15px);
+    background:rgba(255,255,255,0.1);
+    padding:25px;
+    border-radius:20px;
+    margin:30px auto;
+    max-width:600px;
+    box-shadow:0 8px 32px rgba(0,0,0,0.5);
+    text-align:center;
+}
+
+input, button{
+    padding:12px;
+    border:none;
+    border-radius:20px;
+    margin-top:15px;
+}
+
+button{
+    background:#ff4e8b;
+    color:white;
+    cursor:pointer;
+}
+
+.hidden{display:none;}
+
+.timeline{
+    opacity:0;
+    transform:translateY(30px);
+    transition:1s;
+}
+
+.timeline.show{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* Proposal Sparkle */
+.proposal{
+    font-size:26px;
+    margin-top:40px;
+    position:relative;
+    color:#fff;
+    text-shadow:0 0 10px #ff4e8b, 0 0 20px #ff99cc;
+    animation:glow 2s infinite alternate;
+}
+
+.proposal::after{
+    content:"✨ ✨ ✨";
+    position:absolute;
+    left:0;
+    right:0;
+    top:-25px;
+    font-size:20px;
+    animation:sparkle 2s infinite linear;
+}
+
+@keyframes glow{
+    from{text-shadow:0 0 10px #ff4e8b;}
+    to{text-shadow:0 0 25px #ff99cc, 0 0 40px #ff66cc;}
+}
+
+@keyframes sparkle{
+    0%{opacity:0.3; transform:translateY(0);}
+    50%{opacity:1; transform:translateY(-5px);}
+    100%{opacity:0.3; transform:translateY(0);}
+}
+
+/* Floating Hearts */
+.heart{
+    position:fixed;
+    color:white;
+    animation:float 6s linear infinite;
+}
+
+@keyframes float{
+    from{transform:translateY(100vh);}
+    to{transform:translateY(-10vh);}
+}
+
+/* Star Burst */
+#starBurst{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:999;
+}
+
+.star{
+    position:absolute;
+    color:gold;
+    font-size:20px;
+    animation:explode 1s ease-out forwards;
+}
+
+@keyframes explode{
+    0%{
+        transform:translate(0,0) scale(0.5);
+        opacity:1;
+    }
+    100%{
+        transform:translate(var(--x), var(--y)) scale(1.5);
+        opacity:0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Question Unlock -->
+<div class="glass" id="login">
+    <h2>Harani ❤️</h2>
+    <p>நம்ம முதல் சந்திப்பு எங்கே நடந்தது? 🌸</p>
+    <input type="text" id="answer" placeholder="உன் பதில்...">
+    <br>
+    <button onclick="checkAnswer()">Open My Heart 💖</button>
+    <p id="error" style="color:#ffcccc;"></p>
+</div>
+
+<!-- Main Content -->
+<div id="content" class="hidden">
+
+<div class="glass">
+    <div id="typed"></div>
+</div>
+
+<div class="glass timeline">
+    <h3>🌸 Our Beginning</h3>
+    <p>அந்த நாள் தான் என் வாழ்க்கை மாறியது...</p>
+</div>
+
+<div class="glass timeline">
+    <h3>❤️ Our Journey</h3>
+    <p>சில சிரிப்பு... சில கண்ணீர்... ஆனா நம்ம அன்பு strong...</p>
+</div>
+
+<div class="glass proposal">
+    Harani... ❤️<br><br>
+    I love you 😘 😘 😘 
+    <br>
+    <button onclick="sayYes()">YES ❤️</button>
+</div>
+
+</div>
+
+<div id="starBurst"></div>
+
+<audio id="music" src="https://www.bensound.com/bensound-music/bensound-love.mp3"></audio>
+
+<script>
+
+const correctAnswer="dhploffice"; // CHANGE THIS
+const phoneNumber="918220212785"; // CHANGE THIS
+
+const introMessage=`Harani... 🌹
+
+நீ என் வாழ்க்கையில் வந்தது
+ஒரு சம்பவம் இல்ல...
+
+அது ஒரு வரம்...
+
+நான் உன்னை என்றும் நேசிக்கிறேன் ❤️`;
+
+function checkAnswer(){
+    const val=document.getElementById("answer").value.trim().toLowerCase();
+    const correct=correctAnswer.trim().toLowerCase();
+
+    if(val === correct){
+        document.getElementById("login").classList.add("hidden");
+        document.getElementById("content").classList.remove("hidden");
+        document.getElementById("music").play();
+        typeWriter();
+        showTimeline();
+        createHearts();
+    }else{
+        document.getElementById("error").innerText="தவறான பதில் 😢";
+    }
+}
+
+function typeWriter(){
+    let i=0;
+    const speed=40;
+    function typing(){
+        if(i<introMessage.length){
+            document.getElementById("typed").innerHTML+=introMessage.charAt(i);
+            i++;
+            setTimeout(typing,speed);
+        }
+    }
+    typing();
+}
+
+function showTimeline(){
+    const items=document.querySelectorAll(".timeline");
+    let delay=1000;
+    items.forEach(item=>{
+        setTimeout(()=>{
+            item.classList.add("show");
+        },delay);
+        delay+=1000;
+    });
+}
+
+function createHearts(){
+    setInterval(()=>{
+        const heart=document.createElement("div");
+        heart.classList.add("heart");
+        heart.innerHTML="❤️";
+        heart.style.left=Math.random()*100+"vw";
+        document.body.appendChild(heart);
+        setTimeout(()=>heart.remove(),6000);
+    },400);
+}
+
+function sayYes(){
+    const container=document.getElementById("starBurst");
+
+    for(let i=0;i<40;i++){
+        const star=document.createElement("div");
+        star.classList.add("star");
+        star.innerHTML="✨";
+
+        const x=(Math.random()-0.5)*600+"px";
+        const y=(Math.random()-0.5)*600+"px";
+
+        star.style.setProperty("--x",x);
+        star.style.setProperty("--y",y);
+
+        star.style.left="50%";
+        star.style.top="50%";
+
+        container.appendChild(star);
+
+        setTimeout(()=>star.remove(),1000);
+    }
+
+    setTimeout(()=>{
+        window.open("https://wa.me/"+phoneNumber+"?text=Yes ❤️ Forever Together","_blank");
+    },1200);
+}
+
+</script>
+
+</body>
+</html>
